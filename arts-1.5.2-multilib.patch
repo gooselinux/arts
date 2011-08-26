@@ -1,0 +1,79 @@
+--- arts-1.5.2/configure.in.multilib	2006-03-18 12:05:04.000000000 +0100
++++ arts-1.5.2/configure.in	2006-05-15 18:30:13.000000000 +0200
+@@ -850,6 +850,7 @@
+ 
+ dnl Don't remove !
+ dnl AC_OUTPUT(artsc/artsdsp)
++dnl AC_OUTPUT(artsc/artsc.pc)
+ dnl AC_OUTPUT(soundserver/artsversion-new.h)
+ dnl AC_OUTPUT(flow/gsl/gslconfig.h)
+ 
+@@ -1123,6 +1124,7 @@
+ AC_CONFIG_FILES([ x11/Makefile ])
+ AC_CONFIG_FILES([ artsc/artsc-config ])
+ AC_CONFIG_FILES([ artsc/artsdsp ])
++AC_CONFIG_FILES([ artsc/artsc.pc ])
+ AC_CONFIG_FILES([ soundserver/artsversion-new.h ])
+ AC_CONFIG_FILES([ flow/gsl/gslconfig.h ])
+ AC_OUTPUT
+--- arts-1.5.2/configure.in.in.multilib	2006-03-17 22:26:42.000000000 +0100
++++ arts-1.5.2/configure.in.in	2006-05-15 18:30:12.000000000 +0200
+@@ -846,6 +846,7 @@
+ 
+ dnl Don't remove !
+ dnl AC_OUTPUT(artsc/artsdsp)
++dnl AC_OUTPUT(artsc/artsc.pc)
+ dnl AC_OUTPUT(soundserver/artsversion-new.h)
+ dnl AC_OUTPUT(flow/gsl/gslconfig.h)
+ 
+--- /dev/null	2006-05-15 10:33:12.595075250 +0200
++++ arts-1.5.2/artsc/artsc.pc.in	2006-05-15 18:53:35.000000000 +0200
+@@ -0,0 +1,10 @@
++prefix=@prefix@
++exec_prefix=@prefix@
++libdir=@libdir@
++includedir=@includedir@
++
++Name: artsc
++Description: arts (analog real-time synthesizer) is the sound system of KDE
++Version: @ARTS_VERSION@
++Libs: -L${libdir} -lartsc @USE_THREADS@ @LIBPTHREAD@ @GLIB_LDFLAGS@ @GLIB_LIBADD@
++Cflags: -I${includedir}/artsc @GLIB_CFLAGS@
+--- arts-1.5.2/artsc/artsc-config.in.multilib	2005-09-10 10:13:34.000000000 +0200
++++ arts-1.5.2/artsc/artsc-config.in	2006-05-15 18:52:32.000000000 +0200
+@@ -17,20 +17,18 @@
+ 
+ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+-libdir=@libdir@
++artsc_cflags="`pkg-config --cflags artsc`"
++artsc_libs="`pkg-config --libs artsc`"
+ includedir=@includedir@
+-libdl=@LIBDL@
+-
+-flags=""
+ 
+ while test $# -gt 0
+ do
+   case $1 in
+     --libs)
+-	  flags="$flags -L$libdir $libdl -lartsc @USE_THREADS@ @LIBPTHREAD@ @GLIB_LDFLAGS@ @GLIB_LIBADD@"
++	  flags="$artsc_libs"
+ 	  ;;
+     --cflags)
+-	  flags="$flags -I$includedir/artsc @GLIB_CFLAGS@"
++	  flags="$artsc_cflags"
+ 	  ;;
+     --version)
+ 	  echo 0.9.5
+--- arts-1.5.2/artsc/Makefile.am.multilib	2005-09-10 10:13:34.000000000 +0200
++++ arts-1.5.2/artsc/Makefile.am	2006-05-15 18:30:12.000000000 +0200
+@@ -30,3 +30,8 @@
+ artscinclude_HEADERS = artsc.h artsc_export.h
+ 
+ artscbackend.lo: $(top_builddir)/soundserver/soundserver.h ../flow/artsflow.h
++
++pkgconfigdir = $(libdir)/pkgconfig
++pkgconfig_DATA = artsc.pc
++
++EXTRA_DIST = artsc.pc.in

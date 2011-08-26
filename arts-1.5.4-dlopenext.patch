@@ -1,0 +1,54 @@
+Index: arts-1.5.4/soundserver/FileInputStream.mcopclass
+===================================================================
+--- arts-1.5.4.orig/soundserver/FileInputStream.mcopclass
++++ arts-1.5.4/soundserver/FileInputStream.mcopclass
+@@ -2,4 +2,4 @@ Interface=Arts::FileInputStream,Arts::In
+ Author="Stefan Westerfeld <stefan@space.twc.de>"
+ URL="http://www.arts-project.org"
+ Language=C++
+-Library=libkmedia2.la
++Library=libkmedia2
+Index: arts-1.5.4/soundserver/GSLPlayObject.mcopclass
+===================================================================
+--- arts-1.5.4.orig/soundserver/GSLPlayObject.mcopclass
++++ arts-1.5.4/soundserver/GSLPlayObject.mcopclass
+@@ -3,5 +3,5 @@ Author="Hans Meine <hans_meine@gmx.net>"
+ URL="http://www.arts-project.org/"
+ Extension=wav,mp3,ogg
+ Language=C++
+-Library=libartsgslplayobject.la
++Library=libartsgslplayobject
+ MimeType=audio/wav,audio/x-wav,audio/x-mp3,audio/x-mp1,audio/x-mp2,audio/vorbis,application/ogg
+Index: arts-1.5.4/soundserver/WavPlayObject.mcopclass
+===================================================================
+--- arts-1.5.4.orig/soundserver/WavPlayObject.mcopclass
++++ arts-1.5.4/soundserver/WavPlayObject.mcopclass
+@@ -3,5 +3,5 @@ Author="Stefan Westerfeld <stefan@space.
+ URL="http://www.arts-project.org"
+ Extension=wav
+ Language=C++
+-Library=libartswavplayobject.la
++Library=libartswavplayobject
+ MimeType=audio/wav,audio/x-wav
+Index: arts-1.5.4/mcop/extensionloader.cc
+===================================================================
+--- arts-1.5.4.orig/mcop/extensionloader.cc
++++ arts-1.5.4/mcop/extensionloader.cc
+@@ -57,7 +57,7 @@ ExtensionLoader::ExtensionLoader(const s
+ 	StartupManager::setExtensionLoader(this);
+ 
+     lt_dlinit();
+-	handle = lt_dlopen(dlfilename.c_str());
++	handle = lt_dlopenext(dlfilename.c_str());
+ 
+ 	StartupManager::setExtensionLoader(0);
+ 
+Index: arts-1.5.4/x11/X11GlobalComm.mcopclass
+===================================================================
+--- arts-1.5.4.orig/x11/X11GlobalComm.mcopclass
++++ arts-1.5.4/x11/X11GlobalComm.mcopclass
+@@ -1,3 +1,3 @@
+ Language=C++
+-Library=libx11globalcomm.la
++Library=libx11globalcomm
+ Interface=Arts::Object,Arts::GlobalComm,Arts::X11GlobalComm
